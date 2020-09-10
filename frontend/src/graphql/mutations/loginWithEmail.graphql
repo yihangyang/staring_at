@@ -1,0 +1,5 @@
+mutation LoginWithEmail($options: EmailPasswordInput!) {
+  loginWithEmail(options: $options) {
+    ...RegularUserResponse
+  }
+}

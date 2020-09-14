@@ -9,9 +9,9 @@ interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
   const [{fetching: logoutFetching},logout] = useLogoutMutation()
-  const [{data, fetching}] = useMeQuery({
-    pause: isServer() // ssr not render on server => the useMeQuery will run in client
-  })
+  const [{data, fetching}] = useMeQuery(
+    { pause: isServer() } // ssr not render on server => the useMeQuery will run in client
+  )
 
   let body = null
   

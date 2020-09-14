@@ -16,6 +16,7 @@ import { createConnection } from 'typeorm'
 import { User } from './entities/User'
 import { Post } from './entities/Post'
 import path from 'path'
+import { Updoot } from './entities/Updoot'
 
 const main = async () => {
   // database switch to typeorm
@@ -27,7 +28,7 @@ const main = async () => {
     logging: true,
     synchronize: true, // true is automatically create table dont need run migration anymore
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [User, Post]
+    entities: [User, Post, Updoot]
   })
   await conn.runMigrations() // run the migrations we have that havnt not benn run
   // await Post.delete({}) // clear *** database

@@ -81,3 +81,4 @@ backned: yarn add typeorm
 
 ###
 backend: npx typeorm migration:create -n FakePosts
+backend: npx typeorm migration:create -n FakePosts -d src/

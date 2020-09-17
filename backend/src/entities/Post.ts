@@ -1,6 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany, ManyToOne } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
-import { ManyToOne } from "@mikro-orm/core";
 import { User } from "./User";
 import { Updoot } from "./Updoot";
 

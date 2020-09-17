@@ -1,29 +1,39 @@
 // import { DarkModeSwitch } from '../components/DarkModeSwitch'
+import { Accordion, AccordionHeader, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Heading, Link, SimpleGrid } from '@chakra-ui/core'
 import { withUrqlClient } from 'next-urql'
-import { createUrqlClient } from '../utils/createUrqlClient'
-import { usePostsQuery } from '../generated/graphql'
-import { Layout } from '../components/Layout'
-import { Accordion, AccordionHeader, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Heading, Icon, IconButton, Link, SimpleGrid, Stack, Text } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import React, { useState } from 'react'
+import { EditPostDeleteButton } from '../components/EditPostDeleteButtons'
+import { Layout } from '../components/Layout'
 import { UpdootSession } from '../components/UpdootSession'
+import { useMeQuery, usePostsQuery } from '../generated/graphql'
+import { createUrqlClient } from '../utils/createUrqlClient'
 
 const Index = () => {
+  const [{data: dataMe}] = useMeQuery(
+    // { pause: isServer() } // ssr not render on server => the useMeQuery will run in client
+  )
   const [varibales, setVariables] = useState({
     limit: 10,
     cursor: null as null | string
   })
-  const [{ data, fetching }] = usePostsQuery({
+  const [{ data, error, fetching }] = usePostsQuery({
     variables: varibales
   })
 
+
   if(!fetching && !data) {
-    return <div> For some reaon, query failed</div>
+    return (
+      <div>
+        <div> For some reason, query failed</div>
+        <div>{error?.message}</div>
+      </div>
+    )
   }
   return (
     <Layout>
       <Flex>
-        <Heading>CherryPie</Heading>
+        <Heading>{ dataMe?.me ? <div>{dataMe?.me?.username}, say something</div> : <div>Login to find bigger World</div>}</Heading>
         <NextLink href="/create-post">
           <Button ml="auto" variantColor="pink" variant="solid">
             <Link>create post</Link>
@@ -38,7 +48,7 @@ const Index = () => {
       ) : (
         // <Stack spacing={8}>
         <SimpleGrid columns={2} spacing={10}>
-          { data!.posts.posts.map( (p) => (
+          { data!.posts.posts.map( (p) => !p ? null : (
               // <Box key={p.id} p={5} shadow="md" borderWidth="1px" rounded="md" >
               //   <Heading fontSize="base">{p.title.slice(0, 50)}</Heading> {p.creator.username}
               //   <Text mt={4}>{p.textSnippet}</Text>
@@ -57,7 +67,14 @@ const Index = () => {
                 <AccordionPanel pb={4}>
                   <Flex>
                     <Flex flex="4">
-                      {p.textSnippet}
+                      <NextLink href="/post/[id]" as={`/post/${p.id}`}>
+                        <Link>
+                          {p.textSnippet}
+                        </Link>
+                      </NextLink>
+                    </Flex>
+                    <Flex flex="1" mt="auto" direction="column" alignItems="flex-end">
+                      <EditPostDeleteButton id={p.id} creatorId={p.creator.id} />
                     </Flex>
                     <Flex flex="1" direction="column" alignItems="flex-end">
                       <UpdootSession post={p} />

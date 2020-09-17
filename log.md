@@ -79,6 +79,14 @@ backend: yarn remove redis
 ## switching to TypeORM
 backned: yarn add typeorm
 
-###
+### create fake data
 backend: npx typeorm migration:create -n FakePosts
 backend: npx typeorm migration:create -n FakePosts -d src/
+
+
+
+### postsql reset IDENTITY to 1
+ALTER SEQUENCE users_id_seq RESTART WITH 1
+
+### dataloader to solve (n+1) problem in loading index.html
+backend: yarn add dataloader

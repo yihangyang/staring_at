@@ -17,6 +17,8 @@ import { User } from './entities/User'
 import { Post } from './entities/Post'
 import path from 'path'
 import { Updoot } from './entities/Updoot'
+import { createUserLoader } from './utils/createUserLoader'
+import { createUpdootLoader } from './utils/createUpdootLoader'
 
 const main = async () => {
   // database switch to typeorm
@@ -75,7 +77,13 @@ const main = async () => {
       validate: false
     }),
     // context: ({ req, res }) => ({ em: orm.em, req, res, redis })
-    context: ({ req, res }) => ({ req, res, redis })
+    context: ({ req, res }) => ({
+      req,
+      res,
+      redis,
+      userLoader: createUserLoader(),
+      updootLoader: createUpdootLoader()
+    })
   })
 
   apolloServer.applyMiddleware({

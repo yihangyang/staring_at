@@ -1,16 +1,18 @@
 import React from 'react'
-import { Box, Link, Flex, Button } from '@chakra-ui/core';
+import { Box, Link, Flex, Button, Heading } from '@chakra-ui/core';
 import NextLink from 'next/link'
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
+import{ useRouter }from 'next/router'
 
-import { isServer } from '../utils/isServer'
+// import { isServer } from '../utils/isServer'
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  const [{fetching: logoutFetching},logout] = useLogoutMutation()
+  const router = useRouter()
+  const [{fetching: logoutFetching}, logout] = useLogoutMutation()
   const [{data, fetching}] = useMeQuery(
-    { pause: isServer() } // ssr not render on server => the useMeQuery will run in client
+    // { pause: isServer() } // ssr not render on server => the useMeQuery will run in client
   )
 
   let body = null
@@ -32,8 +34,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <Flex>
         <Box mr={3}>Welcome, {data.me.username}</Box>
-        <Button onClick={() => {
-          logout()
+        <Button onClick={async () => {
+          await logout()
+          router.reload()
         }}
         isLoading={logoutFetching}
         mr={12} variant="link">logout</Button>
@@ -41,10 +44,15 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     )
   }
   return (
-    <Flex zIndex={1} position="sticky" top={0} bg="tan" p={4}>
-      <Box ml={"auto"}>
-        { body }
-      </Box>
+    <Flex zIndex={1} position="sticky" top={0} bg="#C0FFFF" p={4}>
+      <Flex align="center" m="auto" flex={1} maxW={800}>
+        <NextLink href="/">
+          <Link>
+            <Heading color="#74265e"><i>CherryPie</i></Heading>
+          </Link>
+        </NextLink>
+        <Box ml={"auto"}>{ body }</Box>
+      </Flex>
     </Flex>
   );
 }

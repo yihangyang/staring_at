@@ -1,6 +1,6 @@
-import { Entity, BaseEntity, PrimaryColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryColumn, Column, ManyToOne } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
-import { ManyToOne } from "@mikro-orm/core";
+// this is false import!!! import {  } from "@mikro-orm/core";
 import { User } from "./User";
 import { Post } from "./Post";
 
@@ -27,6 +27,8 @@ export class Updoot extends BaseEntity{
   postId!: number
 
   @Field(() => Post)
-  @ManyToOne(() => Post, (post) => post.updoots)
+  @ManyToOne(() => Post, (post) => post.updoots, {
+    onDelete: 'CASCADE'
+  })
   post: Post
 }

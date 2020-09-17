@@ -41,7 +41,6 @@ const CreatePost: React.FC<{}> = ({}) => {
           Say something to this fucking world...
         </Text>
       </Box>
-
       <Tabs onChange={index => setTabIndex(index)} color="white" bg={bg} mt={6}>
         <TabList>
           <Tab>Say some to World</Tab>
@@ -81,17 +80,17 @@ const CreatePost: React.FC<{}> = ({}) => {
           </TabPanel>
           <TabPanel>
             <Formik
-              initialValues={{email: "", passwordEmail: ""}}
+              initialValues={{title: "", text: ""}}
               onSubmit={async (values, {setErrors}) => {
               }}
             >
               {({isSubmitting}) => (
                 <Form>
                   <Box mt={2}>
-                    <InputField name="email" placeholder="email" label="Email" color="black" />
+                    <InputField name="title" placeholder="title" label="Title" color="black" />
                   </Box>
                   <Box mt={4}>
-                    <InputField name="passwordEmail" placeholder="password" label="Password" type="password" color="black" />
+                    <InputField name="text" placeholder="text" label="text" type="text" color="black" />
                   </Box>
                   <Flex mt={6} align="center">
                     <Button  w="35%" mx="auto" type="submit" isLoading={isSubmitting} variantColor="teal">

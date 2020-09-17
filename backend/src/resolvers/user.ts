@@ -9,7 +9,7 @@ import { validateRegister } from "../utils/validateRegister";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { EmailPasswordInput } from "./EmailPasswordInput";
 import { sendEmail } from "../utils/sendEmail";
-import {v4} from 'uuid'
+import { v4 } from 'uuid'
 import { getConnection } from 'typeorm'
 
 @ObjectType()
